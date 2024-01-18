@@ -1,0 +1,22 @@
+---
+title: "How to create an OctoAI API token"
+description: "A guide for how to create a new API token for the OctoAI compute service in the web UI."
+---
+
+All endpoints are by default private. That means you will need an access token in order to run inferences against those endpoints. To generate a token, head to your Account [Settings](https://octoai.cloud/settings).
+
+![](/images/905a1ac-010_CreateTokenSettings.png)
+
+![](/images/105ada7-011_TokenCreated.png)
+
+After generating a token, make sure to store it in your terminal and/or environment file for your app.
+
+```bash bash
+export OCTOAI_TOKEN=<INSERT_HERE>
+```
+
+Now you'll be able to run inferences against private endpoints! For example:
+
+```bash bash
+curl -X POST '<your-endpoint-url>' --data '{"prompt": "What state is Los Angeles in?", "max_length": 100}' -H 'content-type: application/json' -H "Authorization: Bearer $OCTOAI_TOKEN"
+```

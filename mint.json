@@ -1,0 +1,124 @@
+{
+    "name": "OctoAI",
+    "logo": {
+      "light": "/logo/logo.svg",
+      "dark": "/logo/logo.svg"
+    },
+    "backgroundImage": "/backgroundImage.png",
+    "favicon": "/favicon.svg",
+    "colors": {
+      "primary": "#3369FE",
+      "light": "#608AFC",
+      "dark": "#3369FE"
+    },
+    "topbarCtaButton": {
+      "name": "Login",
+      "url": "https://identity.octoml.ai/oauth/account/login"
+    },
+    "modeToggle": {
+        "default": "dark",
+        "isHidden": true
+      },
+    "tabs": [
+        {
+            "name": "API Reference",
+            "url": "api-reference"
+        }
+    ],
+    "anchors": [
+      {
+        "name": "Discord",
+        "icon": "discord",
+        "url": "https://discord.com/invite/rXTPeRBcG7"
+      },
+      {
+        "name": "Support",
+        "icon": "headset",
+        "url": "https://discord.com/channels/1085222662504194098/1085613782006509600"
+      },
+      {
+        "name": "Models",
+        "icon": "octopus-deploy",
+        "url": "https://octoai.cloud/models"
+      }
+    ],
+    "navigation": [
+      {
+            "group": "Getting Started",
+            "pages": [
+                "welcome-to-octoai",
+                "how-to-create-an-octoai-api-token"         
+            ]
+      },
+      {
+        "group": "Image Gen Solution",
+        "pages": [
+            "getting-started-with-our-image-gen-solution",
+            "image-gen-api-docs"     
+        ]
+      },
+      {
+        "group": "Account",
+        "pages": [
+          "api-reference/account/get-v1account",
+          "api-reference/account/patch-v1account"
+        ]
+      },
+      {
+        "group": "Endpoint",
+        "pages": [
+          "api-reference/endpoint/create-new-endpoint",
+          "api-reference/endpoint/get-v1endpoint",
+          "api-reference/endpoint/delete-v1endpoint",
+          "api-reference/endpoint/updates-an-endpoint",
+          "api-reference/endpoint/get-v1endpoints",
+          "api-reference/endpoint/get-v1endpoint-containermetadata",
+          "api-reference/endpoint/get-v1endpoint-volume_token"
+        ]
+      },
+      {
+        "group": "Secret",
+        "pages": [
+          "api-reference/secret/post-v1secret",
+          "api-reference/secret/retrieve-secret-by-key",
+          "api-reference/secret/update-secret-by-key",
+          "api-reference/secret/delete-secret-by-key",
+          "api-reference/secret/get-v1secrets"
+        ]
+      },
+      {
+        "group": "Registry Credential",
+        "pages": [
+          "api-reference/registry-credential/post-v1registry-credential",
+          "api-reference/registry-credential/retrieve-registry-credentials-by-key",
+          "api-reference/registry-credential/update-registry-credentials-by-key",
+          "api-reference/registry-credential/delete-registry-credentials-by-key",
+          "api-reference/registry-credential/get-v1registry-credentials"
+        ]
+      },
+      {
+        "group": "Public Endpoints",
+        "pages": [
+          "api-reference/public-endpoint/get-v1public-endpoints"
+        ]
+      },
+      {
+        "group": "Instance Types",
+        "pages": [
+          "api-reference/instance-types/get-v1instance-types"
+        ]
+      }
+      
+    ],
+    "footerSocials":
+      {
+          "twitter": "https://twitter.com/octoml?lang=en",
+          "linkedin": "https://www.linkedin.com/company/octoaicloud/"
+      }
+  }
+  
+  
+  
+  
+  
+  

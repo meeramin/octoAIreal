@@ -1,0 +1,36 @@
+---
+title: "Getting started with our Image Gen Solution"
+description: "Access the fastest and most customizable Stable Diffusion on the market"
+---
+
+The OctoAI Image Gen Solution includes Stable Diffusion API endpoints, web UI, and SDKs that offer the
+
+1. fastest inference speed and
+2. most freedom for customization on the market.
+
+We support Stable Diffusion XL and 1.5, for text2img, img2img, and inpainting. ControlNet, Upscaling, and Adetailer are also available under private preview.
+
+* OctoAI's latency-optimized SDXL endpoint has an average latency of \~3.1 seconds for default parameters, and the cost-optimized SDXL endpoint has an average latency of under 7 seconds for default parameters.
+* You can customize our endpoint by mixing and matching different Stable Diffusion assets, including checkpoints, Low Rank Adaptations (LoRA’s), and textual inversions.  
+   * We developed a proprietary Asset Orchestrator technology, which enables smart caching and fast loading of assets to keep customized E2E image generations blazing fast.
+* Other than assets, you can also customize image dimension, sampler, number of diffusion steps, and use prompt weighting to optimize your prompting.
+
+## Web UI playground
+
+You can start familiarizing yourself with our Image Gen features using the web UI, but note that we have even more features available via the API. 
+
+First, click on the top navigation bar and click Image Tools. Here you will see that Text to Image and Image to Image are available to use.
+
+![](/images/6a1e43d-Screenshot_2023-10-31_at_8.38.03_PM.png) 
+
+When you navigate to the Image to Image Demo, you will see this page where you can play with the different settings and click the Generate button to start generating images!
+
+* Default settings for SDXL run at about 3.1 seconds of latency.
+* You can customize images by selecting different checkpoints, LoRAs, and Textual Inversions. This increases E2E latency slightly, but is still blazing fast thanks to OctoAI's proprietary Asset Orchestrator technology, which enables fast loading and smart caching of assets.
+![](/images/72c8d00-Screenshot_2023-10-31_at_8.38.43_PM.png) 
+* If you want to see a list of all public assets in the OctoAI library as well as your own private assets, you can navigate to the Asset Library page via the top nav bar.
+![](/images/01dec16-Screenshot_2023-10-31_at_8.39.21_PM.png) 
+
+## API Docs
+
+When you're ready to start calling the endpoint programmatically, check out [Image Gen API Docs](/docs/image-gen-api-docs)
