@@ -1,0 +1,233 @@
+openapi: 3.1.0
+x-readme:
+  proxy-enabled: false
+  samples-languages:
+    - shell
+  explorer-enabled: true
+  samples-enabled: true
+servers:
+  - url: https://api.octoai.cloud
+paths:
+  /health:
+    get:
+      operationId: health_check_health_get
+      responses:
+        '200':
+          content:
+            application/json:
+              schema: {}
+          description: Successful Response
+      summary: Health Check
+  /v1/assets:
+    get:
+      operationId: list_assets_v1_assets_get
+      parameters:
+        - in: query
+          name: name
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            title: Name
+        - in: query
+          name: is_public
+          required: false
+          schema:
+            default: false
+            title: Is Public
+            type: boolean
+        - in: query
+          name: data_type
+          required: false
+          schema:
+            anyOf:
+              - $ref: '#/components/schemas/DataType'
+            title: Data Type
+        - in: query
+          name: asset_type
+          required: false
+          schema:
+            items:
+              $ref: '#/components/schemas/AssetType'
+            title: Asset Type
+            type: array
+        - in: query
+          name: engine
+          required: false
+          schema:
+            items:
+              $ref: '#/components/schemas/BaseEngine'
+            title: Engine
+            type: array
+        - in: query
+          name: limit
+          required: false
+          schema:
+            default: 100
+            gte: 1
+            lte: 100
+            title: Limit
+            type: integer
+        - in: query
+          name: offset
+          required: false
+          schema:
+            default: 0
+            gte: 0
+            title: Offset
+            type: integer
+        - in: query
+          name: get_preview_urls
+          required: false
+          schema:
+            default: false
+            title: Get Preview Urls
+            type: boolean
+        - in: query
+          name: asset_ids
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            title: Asset Ids
+        - in: query
+          name: owner
+          required: false
+          schema:
+            anyOf:
+              - type: string
+            title: Owner
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ListAssetsResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: List Assets
+      tags:
+        - assets
+    post:
+      operationId: create_asset_v1_assets_post
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateAssetRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CreateAssetResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Create Asset
+      tags:
+        - assets
+  /v1/assets/{asset_id}:
+    delete:
+      operationId: delete_asset_v1_assets__asset_id__delete
+      parameters:
+        - in: path
+          name: asset_id
+          required: true
+          schema:
+            title: Asset Id
+            type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/DeleteAssetResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Delete Asset
+      tags:
+        - assets
+  /v1/assets/{asset_id}/complete-upload:
+    post:
+      operationId: complete_asset_upload_v1_assets__asset_id__complete_upload_post
+      parameters:
+        - in: path
+          name: asset_id
+          required: true
+          schema:
+            title: Asset Id
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CompleteAssetUploadRequest'
+        required: true
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CompleteAssetUploadResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Complete Asset Upload
+      tags:
+        - assets
+  /v1/assets/{asset_owner_and_name_or_id}:
+    get:
+      operationId: retrieve_asset_v1_assets__asset_owner_and_name_or_id__get
+      parameters:
+        - in: path
+          name: asset_owner_and_name_or_id
+          required: true
+          schema:
+            title: Asset Owner And Name Or Id
+            type: string
+        - in: query
+          name: transfer_api_type
+          required: false
+          schema:
+            anyOf:
+              - $ref: '#/components/schemas/TransferApiType'
+            default: presigned-url
+            title: Transfer Api Type
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/RetrieveAssetResponse'
+          description: Successful Response
+        '422':
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/HTTPValidationError'
+          description: Validation Error
+      summary: Retrieve Asset
+      tags:
+        - assets
+security:
+  - bearerAuth: []

@@ -274,7 +274,11 @@
       {
         "group": "Asset Library API",
         "pages": [
-
+          "api-reference/assets/list-assets",
+          "api-reference/assets/create-asset",
+          "api-reference/assets/delete-asset",
+          "api-reference/assets/complete-asset-upload",
+          "api-reference/assets/retrieve-asset"
         ]
       }
     ],
