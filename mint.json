@@ -46,7 +46,7 @@
       {
         "group": "Getting Started",
         "pages": [
-          "getting-started",
+          "welcome-to-octoai",
           "pricing",
           "how-to-create-an-octoai-access-token"
         ]
