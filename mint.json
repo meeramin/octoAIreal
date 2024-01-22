@@ -109,7 +109,7 @@
         ]
       },
       {
-        "group": "credentials",
+        "group": "Credentials",
         "pages": [
           "reference",
           "cli-configuration-reference"
