@@ -191,57 +191,63 @@
         ]
       },
       {
-        "group": "Account",
+        "group": "OctoAI API",
         "pages": [
-          "api-reference/account/get-v1account",
-          "api-reference/account/patch-v1account"
-        ]
-      },
-      {
-        "group": "Endpoint",
-        "pages": [
-          "api-reference/endpoint/create-new-endpoint",
-          "api-reference/endpoint/get-v1endpoint",
-          "api-reference/endpoint/delete-v1endpoint",
-          "api-reference/endpoint/updates-an-endpoint",
-          "api-reference/endpoint/get-v1endpoints",
-          "api-reference/endpoint/get-v1endpoint-containermetadata",
-          "api-reference/endpoint/get-v1endpoint-volume_token"
-        ]
-      },
-      {
-        "group": "Secret",
-        "pages": [
-          "api-reference/secret/post-v1secret",
-          "api-reference/secret/retrieve-secret-by-key",
-          "api-reference/secret/update-secret-by-key",
-          "api-reference/secret/delete-secret-by-key",
-          "api-reference/secret/get-v1secrets"
-        ]
-      },
-      {
-        "group": "Registry Credential",
-        "pages": [
-          "api-reference/registry-credential/post-v1registry-credential",
-          "api-reference/registry-credential/retrieve-registry-credentials-by-key",
-          "api-reference/registry-credential/update-registry-credentials-by-key",
-          "api-reference/registry-credential/delete-registry-credentials-by-key",
-          "api-reference/registry-credential/get-v1registry-credentials"
-        ]
-      },
-      {
-        "group": "Public Endpoints",
-        "pages": [
-          "api-reference/public-endpoint/get-v1public-endpoints"
-        ]
-      },
-      {
-        "group": "Instance Types",
-        "pages": [
-          "api-reference/instance-types/get-v1instance-types"
+          "api-reference/octoai-api/authentication",
+          "api-reference/octoai-api/inference",
+          {
+            "group": "Account",
+            "pages": [
+              "api-reference/account/get-v1account",
+              "api-reference/account/patch-v1account"
+            ]
+          },
+          {
+            "group": "Endpoint",
+            "pages": [
+              "api-reference/endpoint/create-new-endpoint",
+              "api-reference/endpoint/get-v1endpoint",
+              "api-reference/endpoint/delete-v1endpoint",
+              "api-reference/endpoint/updates-an-endpoint",
+              "api-reference/endpoint/get-v1endpoints",
+              "api-reference/endpoint/get-v1endpoint-containermetadata",
+              "api-reference/endpoint/get-v1endpoint-volume_token"
+            ]
+          },
+          {
+            "group": "Secret",
+            "pages": [
+              "api-reference/secret/post-v1secret",
+              "api-reference/secret/retrieve-secret-by-key",
+              "api-reference/secret/update-secret-by-key",
+              "api-reference/secret/delete-secret-by-key",
+              "api-reference/secret/get-v1secrets"
+            ]
+          },
+          {
+            "group": "Registry Credential",
+            "pages": [
+              "api-reference/registry-credential/post-v1registry-credential",
+              "api-reference/registry-credential/retrieve-registry-credentials-by-key",
+              "api-reference/registry-credential/update-registry-credentials-by-key",
+              "api-reference/registry-credential/delete-registry-credentials-by-key",
+              "api-reference/registry-credential/get-v1registry-credentials"
+            ]
+          },
+          {
+            "group": "Public Endpoints",
+            "pages": [
+              "api-reference/public-endpoint/get-v1public-endpoints"
+            ]
+          },
+          {
+            "group": "Instance Types",
+            "pages": [
+              "api-reference/instance-types/get-v1instance-types"
+            ]
+          }
         ]
       }
-      
     ],
     "footerSocials":
       {
