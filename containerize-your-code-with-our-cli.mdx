@@ -1,6 +1,6 @@
 ---
 title: "Create your own Endpoint using the CLI"
-description: "This document describes how to create a custom endpoint for OctoAI Compute Service with the model or code of your choice by using the `octoai`command-line interface (CLI) and the `octoai` Python client."
+description: "This document describes how to create a custom endpoint for OctoAI Compute Service with the model or code of your choice by using the octoai command-line interface (CLI) and the octoai Python client."
 ---
 
 ## Overview
@@ -156,6 +156,7 @@ The images are built for target `linux/amd64` so they can be deployed to OctoAI 
 The scaffolds included on the `octoai` CLI all work locally without a GPU. However, other models that require GPU acceleration may not run locally at all if a GPU is not available in your system.
 
 To test locally, run this command:
+
 </Note>
 
 ```Shell Shell
@@ -645,7 +646,6 @@ endpoint_config:
     path: username/yolov8       # Registry path to image (required)
     tag: v1                     # Tag (optional; not recommended to be set. Defaults to a generated UUID.)
   service-module: app.service   # Path to python module to run (optional); defaults to "service"
-
 ```
 
 ## Appendix: OpenAPI Specification and Pydantic Types
