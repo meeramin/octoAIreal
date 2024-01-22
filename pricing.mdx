@@ -1,0 +1,108 @@
+---
+title: "Pricing"
+---
+
+## Image Gen Solution
+
+| Free                                                      | Pro                  | Enterprise              |                                                |
+| --------------------------------------------------------- | -------------------- | ----------------------- | ---------------------------------------------- |
+| SDXL and SD 1.5 text2img, img2img, Inpainting, ControlNet | Cost-optimized       | Cost-optimized          | Option for Cost-optimized or Latency-optimized |
+| Custom Assets (checkpoints, loras, inversions, VAEs)      | ❌                    | ✅                       | ✅                                              |
+| Upscaler                                                  | ✅                    | ✅                       | ✅                                              |
+| Adetailer                                                 | ❌                    | ❌                       | ✅                                              |
+| Rate limit                                                | 15 requests per hour | 100 requests per minute | No limit                                       |
+| Option for SLA guarantees                                 | ❌                    | ❌                       | ✅                                              |
+| Option for Private Deployment (at higher price)           | ❌                    | ❌                       | ✅                                              |
+| Dedicated Customer Success Manager                        | ❌                    | ❌                       | ✅                                              |
+
+#### Pro pricing for Image Gen Solution
+
+Our pricing for default image features and configurations is:
+
+| Feature Type                                  | Steps | Resolution | Sampler                                    | Price                                          |
+| --------------------------------------------- | ----- | ---------- | ------------------------------------------ | ---------------------------------------------- |
+| SDXL                                          | 30    | 1024x1024  | DDIM (and any not listed below as premium) | $.004/image                                    |
+| SDXL with Custom Asset (Fine-tuned)           | 30    | 1024x1024  | DDIM (and any not listed below as premium) | $.008/image                                    |
+| SDXL Fine-tuning                              | 500   | N/A        | N/A                                        | $.25/tune                                      |
+| SD 1.5 with Base or Custom Asset (Fine-tuned) | 30    | 512x512    | DDIM (and any not listed below as premium) | $.0015/image                                   |
+| SD1.5 Fine-tuning                             | 500   | N/A        | N/A                                        | $0.1/tune                                      |
+| Asset library (storage)                       | N/A   | N/A        | N/A                                        | $.05/GB stored per month, after the first 50GB |
+| Upscaling                                     | N/A   | N/A        | N/A                                        | $.004/request                                  |
+
+The price for each feature type changes as follows for non-default configurations:
+
+| Configuration Type                                                           | Price formula                               |
+| ---------------------------------------------------------------------------- | ------------------------------------------- |
+| Image Generation Steps                                                       | Default price \* (step\_count/30)           |
+| SDXL Resolutions                                                             | Default price \*(pixel\_count/(1024\*1024)) |
+| SD1.5 Resolutions                                                            | Default price \* (pixel\_count/(512\*512))  |
+| Premium Samplers:DPM\_2DPM\_2\_ANCESTRALDPM\_PLUS\_PLUS\_SDE\_KARRASHEUNKLMS | Default price \*2                           |
+| Fine-tuning Steps                                                            | Default price \* (step\_count/500)          |
+
+Here are a few examples to illustrate how this works as well as a calculator (coming soon!) to assist you in applying to your own use case:
+
+| Feature Type                        | Steps | Resolution | Sampler                     | Price  |
+| ----------------------------------- | ----- | ---------- | --------------------------- | ------ |
+| SDXL                                | 40    | 1024x1024  | DDIM (default)              | $.0053 |
+| SDXL                                | 40    | 1024x1024  | DPM\_2\_ANCESTRAL (premium) | $.0107 |
+| SDXL with LCM-LoRA (Fine-tuned)     | 4     | 1024x1024  | LCM                         | $.001  |
+| SDXL with Custom Asset (Fine-tuned) | 60    | 1024x1024  | DDIM (default)              | $.016  |
+| SDXL with Custom Asset (Fine-tuned) | 60    | 1024x1024  | DPM\_2 (premium)            | $.032  |
+| SD 1.5                              | 40    | 512x512    | DDIM (default)              | $.002  |
+| SD1.5                               | 60    | 1024x1024  | DDIM (default)              | $.003  |
+| SD1.5                               | 40    | 1024x1024  | DPM\_2 (premium)            | $.009  |
+| SDXL Fine-tuning                    | 1000  | N/A        | N/A                         | $.5    |
+
+## Text Gen Solution
+
+We offer simple, competitive token-based pricing for text gen endpoints, with prices varying depending on parameter size and quantization level:
+
+| Model                  | Parameter Precision | Input Price          | Output Price         |
+| ---------------------- | ------------------- | -------------------- | -------------------- |
+| Llama2-70B-Chat        | FP16                | $0.00060 / 1K tokens | $0.00190 / 1K tokens |
+| Llama2-70B-Chat        | INT4                | $0.00060 / 1K tokens | $0.00120 / 1K tokens |
+| CodeLlama-34B-Instruct | FP16                | $0.00050 / 1K tokens | $0.00115 / 1K tokens |
+| CodeLlama-34B-Instruct | INT4                | $0.00050 / 1K tokens | $0.00080 / 1K tokens |
+| Llama2-13B-Chat        | FP16                | $0.00020 / 1K tokens | $0.00050 / 1K tokens |
+| CodeLlama-13B-Instruct | FP16                | $0.00020 / 1K tokens | $0.00050 / 1K tokens |
+| Mixtral-8x7B-Instruct  | FP16                | $0.00020 / 1K tokens | $0.00050 / 1K tokens |
+| CodeLlama-7B-Instruct  | FP16                | $0.00010 / 1K tokens | $0.00025 / 1K tokens |
+| Mistral-7B-Instruct    | FP16                | $0.00010 / 1K tokens | $0.00025 / 1K tokens |
+
+If you would like to explore pricing for other models, quantization levels, or specific fine tunes, [contact us](https://octoml.ai/contact-us/).
+
+## Compute Service
+
+| Free                                                            | Pro | Enterprise |              |
+| --------------------------------------------------------------- | --- | ---------- | ------------ |
+| Deploy endpoint from any container (private or public registry) | ✅   | ✅          | ✅            |
+| Example models from community                                   | ✅   | ✅          | ✅            |
+| CLI and SDK for containerizing + deploying Python models        | ✅   | ✅          | ✅            |
+| Max endpoints per account                                       | 2   | 10         | No limit     |
+| Max replicas per endpoint                                       | 3   | 10         | No limit     |
+| Auto-acceleration of PyTorch models                             | ❌   | ❌          | Early access |
+| Dedicated Customer Success Manager                              | ❌   | ❌          | ✅            |
+
+#### Pro pricing for Compute Service
+
+1. Large 80: this maps to an A100 GPU with 80GB memory and is priced at $0.00145 per second (\~$5.20 per hour)
+2. Large 40: this maps to an A100 GPU with 40GB memory and is priced at $0.00114 per second (\~$4.10 per hour)
+3. Medium: this maps to an A10 GPU with 24GB memory and is priced at $0.00032 per second (\~$1.15 per hour)
+4. Small: this maps to a T4 GPU with 16GB memory and is priced at $0.00011 per second (\~$0.40 per hour)
+
+We bill by the second of **compute usage**, starting at the time when the endpoint is ready for inferences.
+
+* In other words, we bill for the total of inference duration and timeout duration.
+* We do NOT bill for the duration of cold start.
+* The time when the endpoint is ready for inferences is when the healthcheck on your endpoint starts to return a 200; or in the case where your endpoint has no healthcheck, the time when you see the "Replica is running" log line in your Events tab in the UI.
+
+Example models already have a pre-set hardware/ pricing tier. If you instead create an endpoint from a custom model, you can choose between the three tiers.
+
+When you’re about to run out your free credits, we will prompt you to put down your credit card, which you can do in your [Account Usage page](https://octoai.cloud/usage). If there is a card in the system already, we will automatically charge your card for the auto-reload amount.
+
+* You can always check how many credits you have remaining in the top-level banner in the UI (see screenshot below).
+* If you do not put down a valid credit card before your credits run out, we will suspend your account and automatically terminate all your endpoints.
+
+You can view your usage to date, add a credit card, and view invoices in your [Account Usage page](https://octoai.cloud/usage) anytime.
+
+![](/images/801be62-Screenshot_2023-06-13_at_11.53.18_PM.png)
