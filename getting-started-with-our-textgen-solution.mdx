@@ -1,0 +1,60 @@
+---
+title: "Getting started with our Text Gen Solution"
+description: "The OctoAI Text Gen Solution offers market-leading price and performance for a growing list open source LLMs including Llama2, CodeLlama, and Mistral (see "Supported models" section below). We offer a WebUI playground, API endpoints, and Python/Typescript SDK solution for interacting with these models. All of our endpoints are callable via "chat completions" format currently popular in the industry (see API documentation). "
+---
+
+In the coming months, we will launch additional features including efficient fine-tuning, longer-context models, JSON mode support, and other features.
+
+If you have an LLM use case that our existing endpoints do not support, [contact us](https://octoml.ai/contact-us/). We offer low-latency and throughput-optimized solutions for all LLama2, CodeLlama, and Mistral checkpoints.
+
+## Self-Service Models
+
+![](/images/3a01836-image.png)
+
+We are always expanding our offering of models and other features. Presently, OctoAI supports the following models & checkpoints for self-service models:
+
+**Llama2-Chat**: Released by Meta in July 2023, this auto-regressive language model uses an optimized transformer architecture. This model is available for commercial use. The "Chat" versions that OctoAI hosts by default utilize supervised fine-tuning (SFT) and reinforcement learning with human feedback (RLHF) to align with human preferences for helpfulness and safety. [Read more.](https://github.com/facebookresearch/llama/blob/main/MODEL%5FCARD.md) OctoAI offers this model in 13- and 70-billion parameter sizes. Our quality testing has indicated that the 7 billion parameter variant does not meet competitive quality standards. For the 70B parameter model, we also offer a quantized INT4 variant for reduced pricing (with only mild impacts on quality). All checkpoints of this model hosted by OctoAI are limited to a max token length of 4,096.
+
+**Codellama-Instruct:** Released by Meta in August 2023, this model builds upon the Llama2 architecture but offers specialized support for coding and other structured tasks. This model is available for commercial use. We host the "Instruct" variant, optimized for instruction following and safer deployment. [Read more.](https://github.com/facebookresearch/codellama/blob/main/MODEL%5FCARD.md) We support 7-, 13-, and 34-billion parameter variants. Our 34B offering includes both FP16 (for highest quality) and INT4 (cost-optimized) variants. Other variants, including the Python checkpoint, are available upon request. All endpoints support up to 4,096 tokens, except for our Codellama34B-FP16 endpoint, which supports up to 16,384 tokens.
+
+**Mistral-7b-Instruct-v0.2:** Updated by Mistral AI in December 2023, this model has impressed the LLM community with its high-quality performance at a very low parameter count. This model is available for commercial use. [Read more.](https://huggingface.co/mistralai/Mistral-7B-Instruct-v0.1) We offer a single endpoint here: the 7B parameter model, which supports up to 4,096 tokens. **Note that Mistral's model does not have any moderation mechanisms.** For more sensitive use cases, we recommend using Llama2 and Codellama endpoints.
+
+**\[New\] Mistral-8x7b-Instruct:**  Mistral AI's December 2023 release, Mistral-8x7b-Instruct, is a "mixture of experts" model utilizing conditional computing for efficient token generation, reducing computational demands while improving response quality (GPT-4 is widely believed to be an MoE model). Mistral-8x7b-Instruct brings these efficiencies to the open-source LLM realm, and it is licensed for commercial use. It supports up to 32,768 tokens. [Read more](https://huggingface.co/mistralai/Mixtral-8x7B-v0.1). **Note: As with Mistral-7B-Instruct, Mixtral lacks moderation mechanisms**. For sensitive applications, consider Llama2 or Codellama endpoints
+
+For pricing of all of these endpoints, please refer to our [pricing page](/docs/pricing).
+
+## Web UI playground
+
+You can start familiarizing yourself with our Text Gen features using the web UI, but note that we have even more features available via the API. 
+
+First, click on the top navigation bar and click Text Tools. Here you will see the different model families that we offer for self-service users:
+
+![](/images/4677ea4-image.png)
+
+Click the "Demo" or "API" selections to enter our playground, where you can:
+
+\*Easily switch between all of our models, parameter counts, and quantization settings
+
+\*Test each model using our chat interface
+
+\*Adjust common settings such as `temperature`
+
+\*See the pricing and context limits for any selected model.
+
+![](/images/df0f1a1-image.png)
+
+Selecting the "API" toggle will show you code samples in Python, Typescript, and CURL format for calling the endpoint that you've selected, as well as key input & output parameters:
+
+![](/images/2f26ac3-image.png)
+
+## Billing
+
+For pricing of all of these endpoints, please refer to our [pricing page](/docs/pricing).
+
+Once you provide billing information and generate an API key, any usage of these endpoints will be viewable under Accounts -> Billing & Usage -> Text Generation Usage. Note that these endpoints are very price competitive, so you'll generally needs to rack up tens of thousands of tokens before you can see the charges!
+
+![](/images/fdb8606-image.png)
+
+## API Docs
+
+When you're ready to start calling the endpoint programmatically, check out our [REST API](/docs/text-gen-api-docs), [Python SDK](/docs/text-generation), and [Typescript SDK](/docs/text-gen-typescript-sdk) docs.

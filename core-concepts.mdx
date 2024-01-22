@@ -1,0 +1,40 @@
+---
+title: "Core Concepts"
+description: "OctoML is on a mission to offer easy access to **efficient compute** and enable users to integrate their choice of AI models into applications. The OctoAI compute service helps you turn any container or Python code into a production-grade endpoint within minutes. This page outlines core concepts within OctoAI. "
+---
+
+#### Endpoint
+
+An endpoint provides a dedicated URL to serve inference. You can create an endpoint by deploying an example model or creating a new endpoint from your own container/ Python model. Endpoints are private by default, and you can optionally allow public access. Each endpoint has autoscaling configuration, including minimum replicas, maximum replicas, and a timeout duration. 
+
+Endpoints are described in detail in [Introduction](/docs/introduction) and their API reference can be found in [Endpoint](/reference/endpoint-1).
+
+#### Replicas
+
+1 replica is equivalent to 1 GPU or hardware instance. You can specify minimum and maximum replicas for each endpoint. Using 0 minimum replicas will stop all hardware instances when there’s no inference requests within the specified timeout value. You can set the minimum replicas to 1 to reduce cold start occurrences. More details on cold start are [available here](/docs/cold-start). 
+
+The maximum replicas value is the maximum number of simultaneous hardware instances that will be used. In general, 1 GPU can support a single request at a time. Concurrent requests exceeding the maximum replicas will be placed in a queue until a replica is available. 
+
+#### Timeout
+
+Timeout is the wait duration, if there are no inference requests, before scaling down to the minimum configured replicas. This value is configured in seconds. A higher value will reduce cold start occurrences. 
+
+#### Registry Credentials
+
+When creating an endpoint from a privately stored custom container, you’ll need to provide the registry credentials. You can provide these credentials when creating your endpoint. More details are [available here](/docs/pulling-containers-from-a-private-registry). 
+
+#### Endpoint Secrets
+
+When creating an endpoint from a custom container, you may wish to mount database secrets or any other environment variables onto your container. You can provide these secrets when creating your endpoint. More details are [available here](/docs/setting-up-secrets-or-environment-variables-for-your-custom-endpoints).
+
+#### Web UI
+
+Demo endpoints have a web interface where you can try out inference. As an example with Stable Diffusion, you can try different input prompts and parameters to generate images. You’ll see the output directly in the web interface. 
+
+#### REST API
+
+The REST API can be used in your application with any programming language. Example inference curl commands are also provided in each example model. A guide to the REST API is [available here](/reference/).
+
+#### SDK
+
+OctoAI provides SDKs, including Python & Typscript, which are libraries that improve the ease of use for OctoAI endpoints and services. They allow you to run inferences against an endpoint by providing a dictionary with the necessary inputs, and integrate fine-tuning or asset library.

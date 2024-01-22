@@ -1,0 +1,33 @@
+---
+title: "CLI Configuration Reference"
+---
+
+## Reference: `octoai.yaml` Configuration File
+
+The following snippet shows a fully populated configuration file with all supported directives you can use to configure your endpoint for deployment.
+
+```YAML YAML
+endpoint_config:
+  name: yolov8                  # Unique endpoint name (required)
+  display-name: Yolov8          # User-visible endpoint name. (optional)
+  description: Object Detection # User-visible endpoint description. (optional)
+  hardware: gpu.t4.medium       # Use a T4 hardware type (required)
+  min-replicas: 1               # Keep a minimum of one replica (optional)
+  max-replicas: 3               # scale up up to 3 replicas (optional)
+  scaledown-in-seconds: 30      # scale down after 30 seconds of inactivity. (optional)
+  concurrency-per-replica: 2    # Concurrent requests sent to replica (optional)
+  public: false                 # Whether the endpoint is publicly visible (optional)
+  regcred-key: dockerhub        # Registry credentials for OctoAI to pull your image (optional)
+  secrets:                      # Secrets stored in OctoAI to surface as env. variables (optional)
+  - mykey
+  - mysecondkey
+  env_overrides:                # Environment variables to set in each replica (optional)
+    key1: value1
+    key2: value2
+  registry:                       
+    host: docker.io             # Registry hostname (required)
+    path: username/yolov8       # Registry path to image (required)
+    tag: v1                     # Tag (optional; not recommended to be set. Defaults to a generated UUID.)
+  service-module: app.service   # Path to python module to run (optional); defaults to "service"
+
+```

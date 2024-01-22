@@ -1,0 +1,41 @@
+---
+title: "What is a Stable Diffusion "asset"?"
+---
+
+* Checkpoints are custom versions of the Stable Diffusion model which can represent a specific style, subject, or object. Styles can vary from general purpose, realistic photography, to even cartoons. Checkpoints are the most expensive and large asset, both from a storage and compute perspective, but it tends to preserve your desired customization with the most consistency.
+* LoRA’s are additional custom weights applied to a base checkpoint. Similar to checkpoints, LoRA’s can represent a specific style or custom subject, but they are much smaller in size and more economical to use.
+* Textual inversions are embeddings that represent custom subjects. You can also use negative embeddings to avoid undesirable content, like poor quality hands and lighting. These are the smallest and cheapest assets we currently support.
+
+The web UI is an easy way to experiment by combining assets, and the equivalent API call is displayed in the cURL example.
+
+### Prompt weighting
+
+You can emphasize, or de-emphasize, specific words or phrases of the image generation prompt using weighting. To use prompt weighting, format your prompt using parentheses: `prompt = "A cat with (long whiskers)"`
+
+This emphasizes the phrase “long whiskers” with a weight of `1.1`. Adding additional parentheses such as `"(((long whiskers)))"` performs additional multiples of `1.1`, so for 3 sets of parentheses, the weight would be `1.33`. More specific weights can also be specified in the form: `prompt = "A cat with (long whiskers: 0.8)"`
+
+This will weigh all words in the parentheses by a factor of `0.8`. Notably, weights do not have to be greater than one. Using a weight of less than 1 will de-emphasize the contained words.
+
+Using weights in negative prompts can also be helpful. For example, you can avoid distorted hands: `negative_prompt = "(distorted hands: 1.5)"`
+
+### Checkpoints
+
+A diverse set of custom checkpoints, with varying styles, are available to customize your images. The image results with different checkpoints, even using the same prompt, can be significantly different. Using the simple prompt `A photo of an Australian cattle dog running through a park`, you can see see the results from the SDXL base model (left) and samaritan model (right). The samaritan model represents a 3D-cartoon image style. 
+
+![](/images/4d5ffd9-1.jpeg) ![](/images/95229ac-2.jpeg) 
+
+### LoRA's
+
+LoRA’s can further customize your images, including custom objects or styles. You can include multiple LoRA’s in a single image generation, and provide a weight for each LoRA. A greater weight value will have more influence on the generated image. 
+
+You can also create your own LoRA assets on [OctoAI via fine-tuning](/docs/fine-tuning-stable-diffusion) \- please note a Pro or Enterprise account is required to access fine-tuning. 
+
+### Textual Inversions
+
+Textual inversions represent a custom subject or concept within the embeddings of Stable Diffusion. The name of the textual inversion acts as a specific trigger word, which must be included in the prompt. Similar to prompt weighting, you can increase the weight of textual inversion using the format `(textual-inversion:weight)`.
+
+Textual inversions can also represent negative embeddings, which are trained on undesirable content like bad quality hands. You can use these in your _negative_ prompt to improve your images, such as avoiding bad quality hands. 
+
+### Start creating images
+
+Ready to start creating images? Start calling our generation APIs at [Getting Started](/reference/getting-started)

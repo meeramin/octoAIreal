@@ -1,0 +1,24 @@
+---
+title: "How to Debug Inference Errors"
+description: "What should I do if I am not getting a response at all or am getting an error on inferences?"
+---
+
+1. I'm not getting a response after running an inference. What should I do?  
+   1. If your model is large and you're cold starting the model (see [Cold Start](/docs/cold-start)), it is expected that inference can take several minutes to return a response. However, subsequent inferences before the timeout period passes should be much faster.  
+   2. You can view intermediate progress during cold start by clicking on "View event history" in the web UI:  
+   ![](/images/45411e0-Screenshot_2023-06-30_at_4.28.48_PM.png)  
+   3. For a properly configured container, the resources would eventually finish downloading, resulting in the following event line: "Replica is running."  
+   ![](/images/023a64a-Screenshot_2023-06-30_at_4.29.39_PM.png)  
+         * If your replica is running but your requests have no response, it is possible that your request is incorrect: make sure you are calling `https://<endpoint-name>-<account-id>.octoai.run/<YOUR_INFERENCE_ROUTE>` (with an access token if your endpoint is private)  
+         * A typical mistake is putting the port in the URL (this is not necessary), or using the wrong inference route. The inference route should be the likes of `/predict`, `/infer`, or whatever custom route you've defined for running inferences in your container.  
+   4. If you're instead seeing "Replica restarted," then something is likely wrong with how the container is configured. One typical reason is that the health check path is not configured properly, so make sure to refer to [Health Check Path in Custom Containers](/docs/health-check-paths-in-custom-containers).  
+   5. If you're sure your health check route is configured properly, please reach out to us on Discord so we can help you further debug this.  
+         1. Something we can help with, for example, is separating the health check into a container startup readiness check and a liveness check for use cases where there is high concurrent traffic per node. This prevents the container from restarting extraneously.
+2. I'm seeing an Internal Server Error in the API response or in the UI. What should I do?  
+   1. In the web UI, go to the homepage for your endpoint and click on the Logs button in the top right. In the Logs dialog, you'd be able to see a full stack trace of what went wrong.  
+   ![](/images/f603146-Screenshot_2023-06-30_at_4.19.39_PM.png)  
+   2. An example of logs looks like this:  
+   ![](/images/ea055d1-Screenshot_2023-06-30_at_4.22.19_PM.png)  
+   3. If you'd prefer using the CLI over the web UI to inspect logs, follow the instructions in [CLI & SDK Installation](/docs/installation-links) to install the CLI, then take the following two actions:  
+         1. Configure your OctoAI API Token: `octoai init <YOUR_TOKEN>`  
+         2. Get the logs for your specific endpoint by providing the endpoint name: `octoai logs --name <YOUR_ENDPOINT_NAME>`

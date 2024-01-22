@@ -1,0 +1,77 @@
+---
+title: "Asynchronous Inference Using the TypeScript SDK"
+description: "Server-Side Asynchronous Inference"
+---
+
+This guide will cover the basics of running an asynchronous inference using the TypeScript SDK. While this example uses Whisper, it is similarly helpful for other models that you can expect to take a while to compute before returning a response.
+
+The Asynchronous Inference API aims to help alleviate the problem of how long inferences can take so you can provide responses faster to clients. The inference data is stored for 24 hours and is then deleted. This can be used simply in the TypeScript SDK due to it managing your headers and also authentication, as well as providing helper methods to manage the responses received from the server.
+
+For more information on specific methods in the TypeScript SDK, please view our [TypeScript SDK Reference](/docs/typescript-sdk-reference).
+
+For examples of the types of outputs to expect, you can visit the [Whisper Demo](https://octoai.cloud/templates/whisper-demo) at [OctoAI](https://octoai.cloud/). If you'd like more guidance on using the Whisper endpoint using the TypeScript SDK, please see the [Whisper - Speech Recognition on the TypeScript SDK](/docs/whisper-speech-recognition-on-the-typescript-sdk) guide.
+
+#### Requirements
+
+* Please follow [How to create an OctoAI API token](/docs/how-to-create-an-octoai-access-token) if you don't have one already.
+* Please follow the [TypeScript SDK Installation & Setup](/docs/typescript-sdk-installation-setup) guide to install the TypeScript SDK.
+
+The basic setup is still the same as in the basic example of the Whisper guide.
+
+```TypeScript TypeScript
+// Client instantiation, inputs and endpoint URLs are identical to the previous Whisper Guide.
+// Similarly, the setup will be identical for other endpoints you use this feature on as well.
+import { Client } from "@octoai/client";
+import * as fs from "fs";
+
+const whisperEndpoint = "https://whisper-demo-kk0powt97tmb.octoai.run/predict";
+const whisperHealthCheck = "https://whisper-demo-kk0powt97tmb.octoai.run/healthcheck";
+
+// This instantiation approach takes your OCTOAI_TOKEN as an environment variable
+// If you have not set it as an envvar, you can use the below instead
+// const OCTOAI_TOKEN = "API token here from following the token creation guide";
+// const client = new Client(OCTOAI_TOKEN);
+const client = new Client();
+
+// First, we need to convert an audio file to base64.
+const audio = fs.readFileSync("./octo_poem.wav", {
+  encoding: "base64",
+});
+
+// These are the inputs we will send to the endpoint, including the audio base64 string.
+const inputs = {
+  language: "en",
+  task: "transcribe",
+  audio: audio,
+};
+
+```
+
+The pattern of creating a future with the same URL and inputs is the same regardless of the endpoint you're using. Custom endpoints also allow this feature.
+
+```TypeScript TypeScript
+async function wavToText() {
+    if (await client.healthCheck(whisperHealthCheck) === 200) {
+        const future = await client.inferAsync(whisperEndpoint, inputs);
+        let ready = await client.isFutureReady(future);
+        while (!ready) {
+            ready = await client.isFutureReady(future);
+            await new Promise((resolve) => setTimeout(resolve, 1000));
+        }
+        const outputs = (await client.getFutureResult(future));
+        console.log(outputs.transcription);
+    }
+}
+
+wavToText().then();
+```
+
+As with the previous example, the console shows:
+
+`Once upon a time, an AI system was asked to come up with a poem for an octopus.
+It said something along the lines of, Octopus, you are very wise.
+`
+
+This API allows you to store and check on many futures running inferences on the server side.
+
+For more information on the basics of accepted inputs for each demo endpoint, see the [Demo endpoints](/docs/welcome-to-the-octoai-compute-service-copy) section. If you merge those steps with [client.inferAsync](https://octoml.github.io/octoai-typescript-sdk/classes/Client.html#inferAsync) and [client.isFutureReady](https://octoml.github.io/octoai-typescript-sdk/classes/Client.html#isFutureReady) as well as [client.getFutureResult](https://octoml.github.io/octoai-typescript-sdk/classes/Client.html#getFutureResult), all demo endpoints can be used asynchronously on the server side, allowing you to collect futures and poll for when one is ready then surface those results. More information about these methods is available at the [TypeScript SDK Reference](/docs/typescript-sdk-reference).

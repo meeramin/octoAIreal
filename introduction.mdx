@@ -1,0 +1,26 @@
+---
+title: "Introduction to Endpoints"
+description: "OctoAI today supports 2 types of Endpoints."
+---
+
+## I. Demo Endpoints
+
+These are demo endpoints for our Solutions (e.g. Image Gen Solution) which are already running with no cold start. These endpoints run on OctoAI's account and are rate-limited; you can contact our team to upgrade to a version of this endpoint that has no rate limits.
+
+## II. Create your Own Endpoints
+
+You can also create your own endpoints in three different ways.
+
+* You can deploy an Example model by following [Deploying example models](/docs/deploying-example-models)
+* If you're starting from Python code and would like help in turning it into an OctoAI endpoint, [see this guide for how our SDK & CLI can support you.](/docs/containerize-your-code-with-our-cli)
+* Or if you already have a container in either a public or private container registry, you can use OctoAI to deploy your container. OctoAI can run any containers with an HTTP server written in any language, as long as your container is built on a GPU and comes with a declarative configuration of which port is exposed for inferences.
+
+If you already have a container in hand, [check out our guide for deploying an already-prepared container to OctoAI.](/docs/create-custom-endpoints-from-a-container)
+
+## Calling OctoAI endpoints
+
+To integrate OctoAI endpoints into your application, there are three main paths you can use:
+
+1. Our HTTP REST API, which supports both synchronous and asynchronous calls for all endpoints. [Read more about it here.](/reference/inference)
+2. Our Python client, which supports both synchronous and asynchronous inferences for all endpoints. [Python SDK Reference](/docs/sdk-module-reference-documentation)
+3. Our TypeScript client, which supports both synchronous and asynchronous inferences for all endpoints. [TypeScript SDK Reference](/docs/typescript-sdk-reference)

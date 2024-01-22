@@ -1,0 +1,106 @@
+---
+title: "Whisper - Speech Recognition SDK Inferences"
+description: "Whisper"
+---
+
+For examples of the types of outputs to expect, you can visit the [Whisper Demo](https://octoai.cloud/templates/whisper-demo) at [OctoAI](https://octoai.cloud/).
+
+As a next step, Whisper is an excellent candidate for [Asynchronous Inference Using Python SDK](/docs/asynchronous-inference).
+
+#### Requirements
+
+Please follow [How to create an OctoAI API token](/docs/how-to-create-an-octoai-access-token) if you don't have one already.
+
+#### Whisper: Speech Recognition
+
+Whisper is a natural language processing model that converts audio to text. Like with Stable Diffusion, we’ll use the base64 library for encoding an mp3 or a wav file into a base64 string. For more information on all the ways you can customize your Whisper inferences, please see the [Whisper OpenAPI documentation](https://whisper-demo-kk0powt97tmb.octoai.cloud/docs#/default/%5Fhandle%5Fpredict%5Fpredict%5Fpost).
+
+```Python Python
+from octoai.client import Client
+import base64
+
+whisper_url = "https://whisper-demo-kk0powt97tmb.octoai.run/predict"
+whisper_health_check = "https://whisper-demo-kk0powt97tmb.octoai.run/healthcheck"
+
+# First, we need to convert an audio file to base64.
+file_path = "she_sells_seashells_by_the_sea_shore.wav"
+with open(file_path, "rb") as f:
+    encoded_audio = base64.b64encode(f.read())
+    base64_string = encoded_audio.decode("utf-8")
+
+# These are the inputs we will send to the endpoint, including the audio base64 string.
+inputs = {
+    "language": "en",
+    "task": "transcribe",
+    "audio": base64_string,
+}
+
+OCTOAI_TOKEN = "API Token goes here from guide on creating OctoAI API token"
+# The client will also identify if OCTOAI_TOKEN is set as an environment variable
+# So if you have it set, you can simply use:
+# client = Client()
+client = Client(token=OCTOAI_TOKEN)
+if client.health_check(whisper_health_check) == 200:
+  outputs = client.infer(endpoint_url=whisper_url, inputs=inputs)
+  transcription = outputs["transcription"]
+  assert "She sells seashells by the seashore" in transcription
+  assert (
+        "She sells seashells by the seashore"
+        in outputs["response"]["segments"][0]["text"]
+    )
+```
+
+With this particular test file, we will have “She sells seashells by the sea shore.” printed in our command line.
+
+#### Whisper Outputs
+
+The above `outputs` variable returns JSON in something like the following format.
+
+```json
+{
+  prediction_time_ms: 626.42526,
+  response: {
+    segments: [ [Object] ],
+    word_segments: [
+      [Object]
+    ]
+  },
+  transcription: ' She sells seashells by the seashore.'
+}
+
+```
+
+Each `segment` is an object that looks something like:
+
+```json
+{
+  start: 5.553,
+  end: 8.66,
+  text: ' She sells seashells by the seashore.',
+  words: [
+    {
+      word: 'She',
+      start: 5.553,
+      end: 5.633,
+      score: 0.945,
+      speaker: null
+    },
+    {
+      word: 'sells',
+      start: 5.653,
+      end: 5.814,
+      score: 0.328,
+      speaker: null
+    },
+    // etc...
+  ],
+  speaker: null
+}
+
+```
+
+Each `word_segment` is an object that looks something like:
+
+```
+{ word: 'She', start: 0.010, end: 0.093, score: 0.883, speaker: null }
+```

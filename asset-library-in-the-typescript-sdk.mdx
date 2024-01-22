@@ -1,0 +1,80 @@
+---
+title: "Asset Library in the TypeScript SDK"
+description: "For a quick glance at features for the AssetLibrary Client, please see the [AssetLibrary SDK Reference](https://octoml.github.io/octoai-typescript-sdk/build/docs/classes/AssetLibrary.html)."
+---
+
+The AssetLibrary client in the TypeScript SDK allows create, list, get, and delete actions of assets. These assets allow integration with [Image Generation application E2E example](/docs/e2e-image-generation-application-example) to generate more customized images, or [Fine-tuning Stable Diffusion](/docs/fine-tuning-stable-diffusion-v2).
+
+This guide will walk you through using this API to see a list of our public assets, and create your own asset.
+
+#### Requirements
+
+* Please follow [How to create an OctoAI API token](/docs/how-to-create-an-octoai-access-token) if you don't have one already.
+* Please also verify you've completed [TypeScript SDK Installation & Setup](/docs/typescript-sdk-installation-setup). Must be version >= 0.3.1.  
+   * If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the client with `client = Client(process.env.OCTOAI_TOKEN)` or pass the token as a parameter to the constructor.
+
+#### Quick Overview of AssetLibrary API
+
+```TypeScript TypeScript
+import { Client, LoraData } from "@octoai/client";
+
+const OCTOAI_TOKEN = process.env.OCTOAI_TOKEN;
+const client = new Client(OCTOAI_TOKEN);
+
+async function assetExample() {
+    // You can get a list of all of your assets
+    const assetListResponse = await client.asset.list({});
+    console.log(JSON.stringify(assetListResponse.data));
+    // Or specify only public assets from octoai for a specific engine, format, asset_type, etc.
+    const assetListStableDiffusion = await client.asset.list({is_public: true, owner: "octoai", engine: "image/stable-diffusion-v1-5"});
+    console.log(JSON.stringify(assetListStableDiffusion.data));
+    // And also create assets which will be covered further below
+    // You can get a specific asset, in this case one named "origami-paper" created in the example.
+    const asset = await client.asset.get({name: "origami-paper"});
+    console.log(JSON.stringify(asset));
+    // And delete assets.
+    await client.asset.delete(asset.id);
+}
+assetExample().then();
+```
+
+#### Creating a LoRA
+
+You will need a `safetensors` file in order to use this example, and in our case one is named `origami-paper.safetensors`. I'll be using a lora trained on origami that I can use with the words "origami" and "paper".
+
+In this example, we will be adding a LoRA then using it to generate an image. You can also add [checkpoints](https://octoml.github.io/octoai-typescript-sdk/types/CheckpointData.html), [vae](https://octoml.github.io/octoai-typescript-sdk/types/VAEData.html), and [textual inversions](https://octoml.github.io/octoai-typescript-sdk/types/TextualInversionData.html).
+
+You can check the reference guide for more information about the returned [Asset](https://octoml.github.io/octoai-typescript-sdk/types/Asset.html) object or options for the [create](https://octoml.github.io/octoai-typescript-sdk/classes/CreateAssetRequest.html) method.
+
+The `.id` field for the created asset can be used when [Getting started with our Image Gen Solution](/docs/stable-diffusion-guide) and running inferences.
+
+
+```TypeScript TypeScript
+import { Client, LoraData } from "@octoai/client";
+
+const OCTOAI_TOKEN = process.env.OCTOAI_TOKEN;
+const client = new Client(OCTOAI_TOKEN);
+
+async function assetCreateExample() {
+    const loraData = {
+        asset_type: "lora",
+        data_type: "fp16",
+        engine: "image/stable-diffusion-v1-5",
+        file_format: "safetensors",
+        trigger_words: ["origami", "paper"],
+    } as LoraData;
+    const createdAsset = await client.asset.create({
+        file: "origami-paper.safetensors",
+        asset_type: "lora",
+        description: null,
+        data: loraData,
+        name: "origami-paper",
+        is_public: false,
+    });
+}
+assetCreateExample().then();
+```
+
+![astropus.png](/images/fae1665-rainbow-origami-tailong-dragon.png)
+
+rainbow-origami-tailong-dragon.png generated on ImageGen service using AssetLibrary created LoRA

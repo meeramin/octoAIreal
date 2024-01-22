@@ -1,0 +1,11 @@
+---
+title: "Cold Start"
+---
+
+### Demo endpoints have minimal cold start
+
+OctoAI keeps at least one replica warm for endpoints under our Solutions (e.g. Image Gen Solution) so you'd almost never experience cold start latency there.
+
+### Cold start on Custom Containers
+
+We are working hard to get cold start on custom containers down to about 30 seconds. Larger containers may experience longer cold starts as they require more resources and thus more time to initialize before running inference. If cold start is too long for you right now, please ping us in Discord or the chat bubble in the bottom right corner of the UI, so we can onboard you to a feature called Volumes for cold start reduction.

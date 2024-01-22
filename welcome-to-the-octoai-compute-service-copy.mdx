@@ -1,0 +1,32 @@
+---
+title: "Demo endpoints"
+description: "Demo endpoints will help you quickly start building apps with the OctoAI compute service. You'll be up and running in a jiffy!"
+---
+
+OctoAI has a set of demo endpoints that you can try without cold start. To access these endpoints, click on Example Models from your [homepage](octoai.cloud).
+
+![](/images/84b1c67-Screenshot_2023-10-23_at_3.15.30_PM.png) 
+
+Now you will see the following page. Notice how a subset of models have a Demo button.
+
+![](/images/02f3930-Screenshot_2023-10-23_at_3.16.01_PM.png) 
+
+Let’s search for Stable Diffusion in the search bar, then click on the Demo button. That would bring us to the Stable Diffusion endpoint for image generation. 
+
+Then, click the Generate button labeled (1) below. 
+
+![](/images/d36369c-004_SD_QuickStart.png)
+
+Voila! We just generated an image!
+
+##### Using the REST endpoint
+
+If you would run an inference programmatically, scroll down to find an example curl command that works on a Mac. All of our endpoints speak simple JSON over HTTP. 
+
+* The example CURL requires that you have `brew install`'ed `jq` and `base64` already.
+* Note that you need to edit the CURL to use your own API token. Read [How to create an OctoAI API token](/docs/how-to-create-an-octoai-access-token) to learn how to get a token and store it in your local environment, before running the CURL on a private endpoint.
+* The full API spec for each demo endpoint can be found at the /docs route for the endpoint. For example, the Stable Diffusion endpoint is hosted at [https://stable-diffusion-demo-kk0powt97tmb.octoai.run/predict](https://stable-diffusion-demo-kk0powt97tmb.octoai.run/predict), so the corresponding API docs can be found at [https://stable-diffusion-demo-kk0powt97tmb.octoai.run/docs](https://stable-diffusion-demo-kk0powt97tmb.octoai.run/docs)\-- you will need to fill out your auth token in the "Password" field when navigating to this link. Keep the Username field empty.
+
+![](/images/adb7657-009_Curl_My_Model.png)
+
+Note that our demo endpoints are per-IP rate-limited and meant for testing & experimentation only in public beta. If you want to experience the same APIs without a rate limit, **contact our team** (via the chat bubble in the UI or Discord) for access.

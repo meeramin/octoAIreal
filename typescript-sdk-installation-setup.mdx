@@ -1,0 +1,29 @@
+---
+title: "TypeScript SDK Installation & Setup"
+---
+
+#### Requirements:
+
+* Node.js >= 18
+* Generate a token using the [How to create an OctoAI API token](/docs/how-to-create-an-octoai-access-token) guide.
+* Set the token to an environment variable named `OCTOAI_TOKEN` or pass it to the Client class on construction.
+
+#### Installation:
+
+The TypeScript SDK can be installed using NPM.
+
+```bash bash
+npm i @octoai/client
+```
+
+#### Setting API token as an environment variable:
+
+In order to access endpoints from OctoAI, an API token needs to be set, for more information on how to generate an access token see [How to Create an OctoAI Access Token](/docs/how-to-create-an-octoai-access-token).
+
+Wherever you set your environment variables for example in your `.bashrc` or `.env` file set `OCTOAI_TOKEN` to the value you generated following the guide.
+
+```bash bash
+export OCTOAI_TOKEN=YOUR_TOKEN_HERE
+```
+
+Alternatively, on creation of the [Client](https://octoml.github.io/octoai-typescript-sdk/classes/Client.html) class, you can set your token variable. Please see the [Client](https://octoml.github.io/octoai-typescript-sdk/classes/Client.html) docs for more information.

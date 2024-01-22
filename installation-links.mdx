@@ -1,0 +1,82 @@
+---
+title: "CLI & SDK Installation"
+description: "How to download our CLI and Python SDK"
+---
+
+The CLI can be used for managing assets under the Image Gen Solution, or managing endpoints under the Compute Service.
+
+The Python SDK can be used for running inferences against our Solutions or Compute Service endpoints.
+
+To deploy endpoints for your custom models, you will need both the CLI and Python SDK. 
+
+### Latest CLI Release
+
+You can install the latest CLI using the following commands:
+
+The below script downloads and installs the latest compatible version of the Python SDK as well as the CLI and works for both Mac and Linux systems.
+
+#### Install the Latest CLI and Python SDK
+
+```shell shell
+curl https://s3.amazonaws.com/downloads.octoai.cloud/octoai/install_octoai_cli_and_sdk.sh -sSfL | sh
+```
+
+#### Verify the installation
+
+After installation, verify you can execute the binary:
+
+
+
+```shell shell
+octoai version
+```
+
+![](/images/653880b-CleanShot_2023-06-13_at_22.03.042x.png)
+
+
+
+```shell shell
+octoai --help
+```
+
+![](/images/eccc72d-CleanShot_2023-06-13_at_22.04.592x.png)
+
+You can also verify the octoai-sdk has successfully installed in your correct environment.
+
+
+
+```shell shell
+python3 -m pip show octoai-sdk
+```
+
+This should provide an output similar to (though likely with different version numbers):
+
+`Name: octoai-sdk
+Version: 0.7.1
+Summary: A runtime library for OctoAI.
+Home-page: 
+Author: OctoML
+Author-email: 
+License: 
+Location: /Users/sliu/anaconda3/envs/sdk-dev/lib/python3.10/site-packages
+Requires: boto3, chevron, click, fastapi, httpx, numpy, pillow, pydantic, python-dateutil, python-multipart, pyyaml, soundfile, types-pyyaml, types-requests, uvicorn
+Required-by: 
+`
+
+### Uninstall the CLI and Python SDK
+
+Our installation script installs the OctoAI binary to `usr/local/bin`. You can remove it with:
+
+
+
+```shell shell
+rm -rf /usr/local/bin/octoai
+```
+
+You can uninstall the Python SDK using:
+
+```Python Python
+python3 -m pip uninstall octoai-sdk
+```
+
+If you used another method of installation such as brew, rpm, etc, please follow the directions from those services.

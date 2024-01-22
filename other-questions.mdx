@@ -1,0 +1,13 @@
+---
+title: "Other Questions"
+---
+
+* Can my container learn which tier of hardware it's running on?  
+   * Yes, you can use nvidia-smi for this.
+* How/when do my replicas autoscale down if I had multiple replicas active?  
+   * If you set a 1 hour timeout on your endpoint and have enough traffic to keep 5 replicas running, after you make your last inference to the endpoint, 4 replicas will scale down within a minute or two, and the last replica will scale down upon 1 hour of the last inference.
+* If I'm bringing a custom model/container, what does my healthcheck server route need to do?  
+   * If you define a healthcheck, then your endpoint has about 5 minutes to return a 200 OK response on the healthcheck endpoint to be marked as available. The same applies as new replicas spin up.  
+   * If you define a healthcheck, and if there are 3 calls to the healthcheck endpoint in a row that return a non-200 OK status, then that replica will be restarted.
+* How should I think about increasing/decreasing maximum replicas?  
+   * Increasing maximum replicas reduces queuing delay and thus user-perceivable latency when you traffic load is high, but costs you more money because you are charged for the time it takes for each replica to scale down (in addition to the inference duration).

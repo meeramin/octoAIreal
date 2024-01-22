@@ -1,0 +1,36 @@
+---
+title: "Use TypeScript SDK Client to Run OctoAI Inferences"
+---
+
+### OctoAI TypeScript SDK at a glance
+
+If you need assistance with any specifics for using the OctoAI TypeScript SDK, please see the [TypeScript SDK Reference](/docs/typescript-sdk-reference).
+
+The OctoAI TypeScript SDK is intended to help you use OctoAI endpoints. At its simplest, it allows you to run inferences against an endpoint by providing a dictionary with the necessary inputs.
+
+```TypeScript TypeScript
+import { Client } from "@octoai/client";
+
+// Token can be provided to the client here.
+const client = new Client();
+
+// The endpoint URL can be provided, as well as the inputs necessary to run an inference.
+const result = await client.infer("yourEndpointUrl", {"key": "value"});
+
+// It also allows for inference streams for LLMs
+const stream = await client.inferStream("yourEndpointUrl", {"key": "value"});
+
+// And for server-side asynchronous inferences
+const future = await client.inferAsync("yourEndpointUrl", {"key": "value"});
+let ready = await client.isFutureReady(future);
+  while (!ready) {
+    ready = await client.isFutureReady(future);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+  }
+  const outputs = (await client.getFutureResult(future));
+
+// And includes healthChecks
+if (await client.healthCheck("healthCheckEndpointUrl") === 200) {
+	// Run some inferences
+}
+```

@@ -1,0 +1,201 @@
+---
+title: "Text Gen TypeScript SDK"
+---
+
+#### At a Glance
+
+For a quick glance at features for the text generations features using the chat completion API in the TypeScript SDK, please see the [client.chat](https://octoml.github.io/octoai-typescript-sdk/classes/Chat.html) reference.
+
+The `Client` class in our [Example Models on TypeScript SDK](/docs/quickstart-templates-on-the-typescript-sdk) examples allows you to run inferences simply to any model that accepts JSON-formatted inputs as an object, and provides you with all JSON-formatted outputs as an object or StreamReady for the `inferStream` method.
+
+The [client.chat.completions](https://octoml.github.io/octoai-typescript-sdk/classes/Completions.html) class specializes in supporting text generation in your application, and guiding what options are available to modify your outputs. A list of currently available and supported text generation models are available using the [client.chat.listAllModels()](https://octoml.github.io/octoai-typescript-sdk/classes/ChatCompletionCreateRequest.html) method.
+
+There is support for both streaming and non-streaming inferences by passing a value for `stream` in the `create` method.
+
+This guide will walk you through the simplest version of using this API and using streaming in the TypeScript SDK. As with the Text Gen API, there are additional parameters you can pass to the create request including `frequency_penalty`, `max_tokens`, `presence_penalty`, `stop`, `temperature`, `top_p`, etc to have a finer gradient of control over your response as well.
+
+#### Requirements
+
+* Please follow [How to create an OctoAI API token](/docs/how-to-create-an-octoai-access-token) if you don't have one already.
+* Please also verify you've completed [TypeScript SDK Installation & Setup](/docs/typescript-sdk-installation-setup).  
+   * If you use the `OCTOAI_TOKEN` envvar for your token, you can instantiate the client with `client = new Client()`, otherwise you will need to pass an API token using: `client = new Client(OCTOAI_TOKEN)`
+
+#### Supported Models
+
+You can get an array of supported models using the following:
+
+```TypeScript 
+import { Client } from "@octoai/client";
+
+const OCTOAI_TOKEN = process.env.OCTOAI_TOKEN; // Or your token here 
+const client = new Client(OCTOAI_TOKEN);
+
+console.log(client.listAllModels());
+```
+
+The output should be similar to:
+
+```
+[
+  'llama-2-13b-chat-fp16',
+  'llama-2-70b-chat-fp16',
+  'llama-2-70b-chat-int4',
+  'codellama-7b-instruct-fp16',
+  'codellama-13b-instruct-fp16',
+  'codellama-34b-instruct-fp16',
+  'codellama-34b-instruct-int4',
+  'mistral-7b-instruct-fp16'
+]
+```
+
+These are the values that you can put in the `model` field in your [chat completion creation requests](https://octoml.github.io/octoai-typescript-sdk/classes/ChatCompletionCreateRequest.html).
+
+#### Non-Streaming Text Generation Example
+
+The requirements to create a chat completion are to have messages and a model. A simple example looks as follows:
+
+```TypeScript TypeScript
+ import { Client } from "@octoai/client";
+
+const OCTOAI_TOKEN = process.env.OCTOAI_TOKEN; // Or your token here
+const client = new Client(OCTOAI_TOKEN);
+
+async function chat() {
+  const completion = await client.chat.completions.create({
+    "messages": [
+        {
+            "role": "system",
+            "content": "You are a helpful assistant. Keep your responses limited to one short paragraph if possible."
+        },
+        {
+            "role": "user",
+            "content": "Write `hello world` in TypeScript"
+        }
+    ],
+    "model": "codellama-13b-instruct-fp16",
+});
+  console.log(JSON.stringify(completion));
+}
+chat().then();
+
+```
+
+This will return a response similar to the following:
+
+```JSON JSON
+ {
+  "id":"cmpl-2b32fb0c959d47ab99404059768c056f",
+  "object":"chat.completion",
+  "created":1700526187,
+  "model":"codellama-13b-instruct-fp16",
+  "choices":
+  [
+    {
+      "index":0,
+      "message":
+      {
+         "role":"assistant",
+         "content":"Sure, here's an example of how to write \"Hello, World!\" in TypeScript using the `console.log()` method:\n
+         ```\nconsole.log(\"Hello, World!\");\n```\n
+         The `console.log()` method writes the string \"Hello, World!\" to the console, which displays in the web browser or console window.\n\n
+         If you want to write the message to the HTML document, you can use `document.write()` method as follows:\n
+         ```\ndocument.write(\"Hello, World!\");\n```\n
+         This will write the string \"Hello, World!\" to the HTML document, which displays in the web browser.\n\n
+         Let me know if you have any other questions.",
+         "function_call":null
+      },
+      "finish_reason":"stop"
+    }
+  ],
+  "usage":
+  {
+    "prompt_tokens":47,
+    "completion_tokens":146,
+    "total_tokens":193
+  }
+}
+```
+
+The TypeScript SDK returns the JSON mapped to a [CreateChatCompletionResponse](https://octoml.github.io/octoai-typescript-sdk/classes/CreateChatCompletionResponse.html) object, and this type can be used as an interface in your code if desired.
+
+#### Stream Text Generation Example
+
+In the above example, we did not select whether or not to use streaming, and so by default the client will not use streaming. However if you're working with larger requests and don't want to store the entire response in memory or want to have a more interactive experience for users, you may opt to use the stream interface instead.
+
+The request is almost identical, with just one minor change: explicitly requesting a stream response.
+
+```TypeScript TypeScript
+ import { Client } from "@octoai/client";
+
+const OCTOAI_TOKEN = process.env.OCTOAI_TOKEN; // Or your token here
+const client = new Client(OCTOAI_TOKEN);
+
+async function chat() {
+  const completionStream = await client.chat.completions.create({
+    "messages": [
+        {
+            "role": "system",
+            "content": "You are a helpful assistant. Keep your responses limited to one short paragraph if possible."
+        },
+        {
+            "role": "user",
+            "content": "Write `hello world` in TypeScript"
+        }
+    ],
+    "model": "codellama-13b-instruct-fp16",
+    "stream": true,
+});
+  let text = ``;
+  for await (const chunk of completionStream) {
+      text += chunk.choices[0].delta.content;
+      console.log(JSON.stringify(chunk));
+  }
+  
+}
+chat().then();
+```
+
+This will return a `Stream<ChatCompletionStreamResponse>`. Sparing all the chunks that can be received, there is generally a unique starting and ending chunk. In interest of brevity, let's review the starting chunk and the ending chunk. In examples that are not the starting or finishing tokens, you'll typically find a string or token in `chunk.choices[0].delta.content`. The [ChatCompletionStreamResponse](https://octoml.github.io/octoai-typescript-sdk/classes/CreateChatCompletionStreamResponse.html) can be used as an interface in your code for handling responses as well.
+
+```JSON JSON
+// Starting chunk, note that content is null and finish_reason is also null.
+{
+  "id":"cmpl-994f6307a891454cb0f57b7027f5f113",
+  "created":1700527881,
+  "model":"codellama-13b-instruct-fp16",
+  "choices":
+  [
+    {
+      "index":0,
+      "delta":
+      {
+        "role":"assistant",
+        "content":null
+      },
+      "finish_reason":null
+    }
+  ]
+}
+// Ending chunk, note the finish_reason "length" instead of null.
+// This means we reached the max tokens allowed in this request.
+{
+  "id":"cmpl-994f6307a891454cb0f57b7027f5f113",
+  "object":"chat.completion.chunk",
+  "created":1700527881,
+  "model":"codellama-13b-instruct-fp16",
+  "choices":
+  [
+    {
+      "index":0,
+      "delta":
+      {
+        "role":"assistant",
+        "content":"",
+        "function_call":null
+      },
+      "finish_reason":"length"
+    }
+  ]
+}
+
+```

@@ -1,0 +1,18 @@
+---
+title: "Pulling containers from a private registry"
+description: "How to add your registry credentials and pull containers using the credentials"
+---
+
+When you create an endpoint from a custom container, you will see the following page, which has a field for a "Registry Credential." By default, this field is set to "Public," which requires that your container is available for anyone on the internet to pull and no registry credentials will be attached. If your container is instead stored in a private registry, click on the dropdown and then the + sign next to add a "New registry credential".
+
+![](/images/5ec4ae3-001_RegCredAttach.png)
+
+When you click a model will open where you can set a name for the credential, enter the username and password for the registry. 
+
+![](/images/5407303-CleanShot_2023-06-13_at_21.23.452x.png)
+
+* For example, if you are storing your container in a private repository within DockerHub, you can set the credential name to "docker" and look for your DockerHub username in the top right area of the navigation bar in the DockerHub [ UI](https://hub.docker.com/settings/security) once you've logged in. To get your DockerHub access token, go to your DockerHub Account Settings Security [page](https://hub.docker.com/settings/security), then click the New Access Token button.
+
+Once you've added all the fields in the modal and clicked Save, the Registry Credential field will automatically change to the credential you just set up.
+
+Now, just complete all the other fields on this page, e.g. endpoint name, container image... to create the endpoint.

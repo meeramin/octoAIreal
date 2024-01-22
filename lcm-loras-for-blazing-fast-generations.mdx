@@ -1,0 +1,146 @@
+---
+title: "LCM-LoRAs for blazing fast generations"
+description: "A new technology called LCM-LoRAs enables high-quality image generations in less than 1 second"
+---
+
+You can use LCM-LoRAs via our Image Gen APIs, which are documented in detail at [Image Gen API Docs](/docs/image-gen-api-docs)
+
+The following guidelines must be adhered to ensure high quality of output:
+
+1. cfg\_scale must be set to a small number between 1-2 inclusive.
+2. You must use the `octoai:lcm_sdxl` checkpoint, which is available in the OctoAI Asset Library
+3. You must use the LCM sampler
+
+Note: if your API request does not follow the above guidelines, we will automatically force your API parameters to follow the acceptable values.
+
+Typically, 4 steps should be sufficient for high-quality output.
+
+Here is a curl example for text2img with LCM-LoRA and SDXL:
+
+```bash 
+curl -H 'Content-Type: application/json' -H "Authorization: Bearer $OCTOAI_TOKEN" -X POST "https://image.octoai.run/generate/sdxl" \
+    -d '{
+        "prompt": "A puppy playing in a pond",
+        "negative_prompt": "ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, extra limbs, disfigured, deformed, body out of frame, blurry, bad anatomy, blurred, watermark, grainy, signature, cut off, draft",
+        "steps": 4,
+        "seed": 2748252853,
+        "sampler": "LCM",
+        "checkpoint": "octoai:lcm_sdxl",
+        "cfg_scale": 2
+    }'
+```
+
+And here's a Python example:
+
+```python
+import requests
+import os
+import base64
+import io
+import PIL.Image
+
+def _process_test(url):
+    
+    OCTOAI_TOKEN = os.environ.get("OCTOAI_TOKEN")
+
+    payload = {
+        "prompt": "A puppy playing in a pond",
+        "negative_prompt": "ugly, tiling, poorly drawn hands, poorly drawn feet, poorly drawn face, out of frame, extra limbs, disfigured, deformed, body out of frame, blurry, bad anatomy, blurred, watermark, grainy, signature, cut off, draft",
+        "steps": 4,
+        "seed": 2748252853,
+        "sampler": "LCM",
+        "checkpoint": "octoai:lcm_sdxl",
+        "cfg_scale": 2
+    }
+
+    headers = {
+        "Authorization": f"Bearer {OCTOAI_TOKEN}",
+        "Content-Type": "application/json",
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 200:
+        print(response.text)
+
+    img_list = response.json()["images"]
+
+    for i, img_info in enumerate(img_list):
+        img_bytes = base64.b64decode(img_info["image_b64"])
+        img = PIL.Image.open(io.BytesIO(img_bytes))
+        img.load()
+        img.save(f"result_image{i}.jpg")
+
+if __name__ == "__main__":
+    _process_test("https://image.octoai.run/generate/sdxl")
+
+`
+
+You can also use LCM-LoRAs for inpainting and img2img. Here's a Python example for inpainting:
+
+`import requests
+import json
+import os
+import base64
+import time
+import io
+import PIL.Image
+
+def _process_test(url):
+    image = PIL.Image.open("dog.jpg")
+    mask = PIL.Image.open("dogmask.jpg")
+
+    # Create a BytesIO buffer to hold the image data
+    image_buffer = io.BytesIO()
+    image.save(image_buffer, format='JPEG')
+    image_bytes = image_buffer.getvalue()
+    encoded_image = base64.b64encode(image_bytes).decode('utf-8')
+
+    # Create a BytesIO buffer to hold the image data
+    mask_buffer = io.BytesIO()
+    mask.save(mask_buffer, format='JPEG')
+    mask_bytes = mask_buffer.getvalue()
+    encoded_mask = base64.b64encode(mask_bytes).decode('utf-8')
+
+    OCTOAI_TOKEN = os.environ.get("OCTOAI_TOKEN")
+
+    payload = {
+        "prompt": "Face of a yellow cat, high resolution, sitting on a park bench",
+        "negative_prompt": "Blurry photo, distortion, low-res, bad quality",
+        "steps": 4,
+        "width": 1024,
+        "height": 1024,
+        "cfg_scale": 1.4,
+        "checkpoint": "octoai:lcm_sdxl",
+        "init_image": encoded_image,
+        "mask_image": encoded_mask
+    }
+    headers = {
+        "Authorization": f"Bearer {OCTOAI_TOKEN}",
+        "Content-Type": "application/json",
+        "X-OctoAI-Queue-Dispatch": "true"
+    }
+
+    response = requests.post(url, headers=headers, json=payload)
+
+    if response.status_code != 200:
+        print(response.text)
+    print(response.json())
+
+    img_list = response.json()["images"]
+
+    for i, img_info in enumerate(img_list):
+        img_bytes = base64.b64decode(img_info["image_b64"])
+        img = PIL.Image.open(io.BytesIO(img_bytes))
+        img.load()
+        img.save(f"result_image{i}.jpg")
+
+if __name__ == "__main__":
+    _process_test("https://image.octoai.run/generate/sdxl")
+
+```
+
+![](/images/7ea3783-dog.jpg) 
+
+
+![](/images/47f29aa-dogmask.jpg)

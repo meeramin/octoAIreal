@@ -1,0 +1,40 @@
+---
+title: "Use the Python SDK to run inferences on demo endpoints"
+description: "Easy inferences for OctoAI endpoints"
+---
+
+### OctoAI Python SDK at a glance
+
+If you need assistance with any specifics for using the OctoAI Python SDK, please see the [Python SDK Reference](/docs/sdk-module-reference-documentation).
+
+The OctoAI Python SDK is intended to help you use OctoAI endpoints. At its simplest form, it allows you to run inferences against an endpoint by providing a dictionary with the necessary inputs.
+
+```Python Python
+from octoai.client import Client
+
+client = Client()
+
+# It allows you to run inferences
+output = client.infer(endpoint_url="your-endpoint-url", inputs={"keyword": "dictionary"})
+
+# It also allows for inference streams for LLMs
+for token in client.infer_stream("your-endpoint-url", inputs={"keyword": "dictionary"}):
+  if token.get("object") == "chat.completion.chunk":
+    # Do stuff with the token
+
+# And for server-side asynchronous inferences
+future = client.infer_async("your-endpoint-url", {"keyword": "dictionary"})
+# Typically, you'd collect additional futures then poll for status, but for the sake of example...
+while not client.is_future_ready(future):
+  time.sleep(1)
+# Once the results are ready, you can use them in the same way as you
+# typically do for demo endpoints
+result = client.get_future_result(future)
+
+# And includes healthChecks
+if client.health_check("your-healthcheck-url") == 200:
+	# Run some inferences
+
+```
+
+Note that the [infer](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.client.Client.infer) and [infer\_stream](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.client.Client.infer%5Fstream) methods are synchronous; [asynchronous inference](/reference/inference) is available using our REST API or the [infer\_async](https://octoml.github.io/octoai-python-sdk/octoai.html#octoai.client.Client.infer%5Fasync) method.

@@ -1,0 +1,23 @@
+---
+title: "Deploying example models"
+description: "Example models are containerized models contributed by the OctoAI community."
+---
+
+To deploy an example model into an endpoint, click the Deploy button on your desired model.
+
+![](/images/dc2a10d-Screenshot_2023-10-23_at_3.22.21_PM.png) 
+
+Configure your name, autoscaling, and privacy settings for your new endpoint, and then click Deploy.
+
+1. The name of the endpoint will be part of the URL you'll later run inferences against.
+2. The minimum replicas defaults to 0, which means we autoscale down to 0 whenever your endpoint is not receiving requests from your users and the timeout period has passed (this is a way to keep your costs down). Minimum replicas should be set to a higher number if you want to ensure highest uptime for your users and avoid cold starts.
+3. The maximum number of replicas should be set based on how many maximum simultaneous inferences you expect in production. For example, if you expect to handle up to 250 inferences per minute, and each inference takes 1 second for your model on a GPU, then you should set maximum replicas to 5\. This is because 250 inferences per minute translates to 250 / 60 = 4.167 inferences per second and 1 GPU can only handle one request at a time in this case.
+4. The idle timeout should be set to the number of seconds you’d like our servers to wait while no inference requests are received before autoscaling down to your min replicas.
+5. Whether this endpoint requires an API token or not. If set to public, anyone can make inferences of this endpoint.
+6. Finally just hit deploy to proceed.
+
+You'll now see a new endpoint in your own account now with full controls over the settings.
+
+To see the full API spec for your deployed model, navigate to the endpoint URL with `/docs` appended to the end of the URL, for example `https://name-id773qekdhuq.octoai.run/docs`
+
+* If your endpoint is private that link will ask you for a username and password. Just leave username blank and put in your API auth token in the password field.

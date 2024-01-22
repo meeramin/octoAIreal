@@ -44,11 +44,144 @@
     ],
     "navigation": [
       {
-            "group": "Getting Started",
+        "group": "Getting Started",
+        "pages": [
+          "getting-started",
+          "pricing",
+          "how-to-create-an-octoai-access-token"
+        ]
+      },
+      {
+        "group": "Image Gen AI Solution",
+        "pages": [
+          "stable-diffusion-guide",
+          "image-gen-api-docs",
+          "lcm-loras-for-blazing-fast-generations",
+          "what-is-a-stable-diffusion-asset",
+          "uploading-a-custom-asset-to-the-octoai-asset-library",
+          {
+            "group": "Fine-tuning Stable Diffusion",
             "pages": [
-                "welcome-to-octoai",
-                "how-to-create-an-octoai-api-token"         
+              "fine-tuning-stable-diffusion-v2",
+              "typescript-sdk-finetuning"
             ]
+          },
+          "upscaling"
+        ]
+      },
+      {
+        "group": "Text Gen Solution",
+        "pages": [
+          "getting-started-with-our-textgen-solution",
+          "text-gen-api-docs",
+          "text-gen-typescript-sdk",
+          "text-generation"
+        ]
+      },
+      {
+        "group": "Compute Service",
+        "pages": [
+          "introduction",
+          "welcome-to-the-octoai-compute-service-copy",
+          "deploying-example-models"
+        ]
+      },
+      {
+        "group": "Bring Your Own Model",
+        "pages": [
+          {
+            "group": "CLI & SDK Installation",
+            "pages": [
+              "installation-links",
+              "alternative-octoai-cli-sdk-installation-options"
+            ]
+          },
+          "containerize-your-code-with-our-cli",
+          {
+            "group": "Create your own Endpoint from an existing container",
+            "pages": [
+              "create-custom-endpoints-from-a-container",
+              "pulling-containers-from-a-private-registry",
+              "setting-up-secrets-or-environment-variables-for-your-custom-endpoints"
+            ]
+          },
+          "create-custom-endpoints-from-python-code"
+        ]
+      },
+      {
+        "group": "credentials",
+        "pages": [
+          "reference",
+          "cli-configuration-reference"
+        ]
+      },
+      {
+        "group": "Python SDK",
+        "pages": [
+          "use-the-python-client-for-templates",
+          "python-sdk-installation-setup",
+          {
+            "group": "Example Models on Python SDK",
+            "pages": [
+              "quickstart-templates-to-run-inferences",
+              "speech-recognition-sdk-quickstart-template-guide",
+              "imageandtexttoimage-sdk-quickstart-templates"
+            ]
+          },
+          "asynchronous-inference",
+          "image-generation-model",
+          "assetorchestrator-python-client"
+        ]
+      },
+      {
+        "group": "Typescript SDK",
+        "pages": [
+          "typescript-sdk-installation-setup",
+          "use-typescript-sdk-to-run-octoai-inferences",
+          {
+            "group": "Example Models on TypeScript SDK",
+            "pages": [
+              "quickstart-templates-on-the-typescript-sdk",
+              "whisper-speech-recognition-on-the-typescript-sdk",
+              "guided-stable-diffusion-on-typescript-sdk"
+            ]
+          },
+          "asynchronous-inference-using-the-typescript-sdk",
+          "asset-library-in-the-typescript-sdk"
+        ]
+      },
+      {
+        "group": "Tutorials",
+        "pages": [
+          "e2e-image-generation-application-example",
+          "automatic1111",
+          {
+            "group": "LLM Q&A applications using LangChain",
+            "pages": [
+              "llm-code-samples",
+              "octoai-llm-provider-for-langchain",
+              "setup-steps-for-the-qa-app",
+              "create-a-simple-chat-app",
+              "create-a-simple-pdf-qa-application",
+              "building-a-moviebot-chat-app",
+              "code-walkthrough-generic-chat-app-copy"
+            ]
+          }
+        ]
+      },
+      {
+        "group": "FAQs",
+        "pages": [
+          "core-concepts",
+          "inference-errors",
+          "health-check-paths-in-custom-containers",
+          "multi-user-accounts",
+          "cold-start",
+          "security-and-privacy",
+          "service-regions",
+          "other-questions",
+          "open-source-licenses"
+        ]
       },
       {
         "group": "Image Gen Solution",

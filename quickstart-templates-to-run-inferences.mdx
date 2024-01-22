@@ -1,0 +1,24 @@
+---
+title: "Example Models on Python SDK"
+---
+
+### Overview
+
+The Python SDK allows for running inferences against all OctoAI endpoints.
+
+#### Requirements to run inferences
+
+Ensure you have set `OCTOAI_TOKEN` either as an environment variable or passed to the client before getting started. See [Python SDK Installation & Setup](/docs/python-sdk-installation-setup) for more information.
+
+To run an inference, you need to know 2 pieces of data.
+
+1. The endpoint that can accept inferences
+2. The data the endpoint takes in to produce an output.
+
+To find this for Example Models, visit [octoai.cloud](https://octoai.cloud/), click on "[Example models](https://octoai.cloud/templates)" and select which one you'd like to use. Let's check this using a Stable Diffusion controlling model called [Canny](https://octoai.cloud/templates/controlnet-canny-demo).
+
+If you scroll down below the GUI to run inferences, you will see "Endpoint URL" as well as a description on how to run an inference using cURL. In the future, examples using the Python SDK will also be available to run more easily.
+
+For health checks, most end with the URL `/healthcheck` 
+
+![](/images/1c91d93-Screenshot_2023-06-24_at_7.09.41_AM.png)
