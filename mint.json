@@ -247,6 +247,35 @@
             ]
           }
         ]
+      },
+      {
+        "group": "Image Generation API",
+        "pages": [
+          "api-reference/generate-images",
+          "api-reference/generate-images-1",
+          "api-reference/generate-images-2",
+          "api-reference/generate-images-3",
+          "api-reference/generate-images-4",
+          "api-reference/predict",
+          "api-reference/healthcheck"   
+        ]
+      },
+      {
+        "group": "Fine Tuning API",
+        "pages": [
+          "api-reference/tune/health-check",
+          "api-reference/tune/create-tune",
+          "api-reference/tune/get-tune",
+          "api-reference/tune/delete-tune",
+          "api-reference/tune/cancel-tune",
+          "api-reference/tune/list-tunes"
+        ]
+      },
+      {
+        "group": "Asset Library API",
+        "pages": [
+
+        ]
       }
     ],
     "footerSocials":
@@ -255,7 +284,6 @@
           "linkedin": "https://www.linkedin.com/company/octoaicloud/"
       }
   }
-  
   
   
   
