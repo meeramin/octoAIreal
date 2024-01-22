@@ -255,9 +255,7 @@
           "api-reference/generate-images-1",
           "api-reference/generate-images-2",
           "api-reference/generate-images-3",
-          "api-reference/generate-images-4",
-          "api-reference/predict",
-          "api-reference/healthcheck"   
+          "api-reference/generate-images-4"
         ]
       },
       {

@@ -1,3 +1,613 @@
+components:
+  schemas:
+    ArchiverVolumeStorageRef:
+      properties:
+        manifest_s3_md5:
+          description: Manifest S3 mdf. It matches the S3 ETag encoding.
+          title: Manifest S3 Md5
+          type: string
+        manifest_s3_url:
+          description: Manifest S3 URL.
+          title: Manifest S3 Url
+          type: string
+        manifest_version:
+          description: Manifest version.
+          title: Manifest Version
+          type: string
+      required:
+        - manifest_version
+        - manifest_s3_url
+        - manifest_s3_md5
+      title: ArchiverVolumeStorageRef
+      type: object
+    Asset:
+      properties:
+        asset_type:
+          allOf:
+            - $ref: '#/components/schemas/AssetType'
+          description: Asset type.
+        created_at:
+          description: Asset creation time.
+          title: Created At
+          type: string
+        data:
+          description: Asset data.
+          discriminator:
+            mapping:
+              checkpoint: '#/components/schemas/CheckpointData'
+              file: '#/components/schemas/FileData'
+              lora: '#/components/schemas/LoraData'
+              textual_inversion: '#/components/schemas/TextualInversionData'
+              vae: '#/components/schemas/VAEData'
+              volume: '#/components/schemas/VolumeData'
+            propertyName: asset_type
+          oneOf:
+            - $ref: '#/components/schemas/FileData'
+            - $ref: '#/components/schemas/CheckpointData'
+            - $ref: '#/components/schemas/LoraData'
+            - $ref: '#/components/schemas/TextualInversionData'
+            - $ref: '#/components/schemas/VAEData'
+            - $ref: '#/components/schemas/VolumeData'
+          title: Data
+        description:
+          description: Description.
+          title: Description
+          type: string
+        id:
+          description: Asset id.
+          title: Id
+          type: string
+        is_public:
+          default: false
+          description: True if asset is public.
+          title: Is Public
+          type: boolean
+        name:
+          description: Asset name.
+          title: Name
+          type: string
+        size_bytes:
+          description: Size in bytes.
+          format: int64
+          title: Size Bytes
+          type: integer
+        status:
+          allOf:
+            - $ref: '#/components/schemas/Status'
+          description: Asset status.
+        status_details:
+          description: Asset status.
+          title: Status Details
+          type: string
+        tenant_uuid:
+          description: Asset tenant ID.
+          format: uuid
+          title: Tenant Uuid
+          type: string
+      required:
+        - id
+        - asset_type
+        - name
+        - description
+        - size_bytes
+        - status
+        - status_details
+        - created_at
+        - data
+        - tenant_uuid
+      title: Asset
+      type: object
+    AssetType:
+      enum:
+        - file
+        - checkpoint
+        - lora
+        - textual_inversion
+        - vae
+        - volume
+      title: AssetType
+      type: string
+    BaseEngine:
+      enum:
+        - text/llama-2-7b
+        - image/controlnet-sd15
+        - image/controlnet-sdxl
+        - image/stable-diffusion-v1-5
+        - image/stable-diffusion-xl-v1-0
+        - image/stable-diffusion-ssd
+      title: BaseEngine
+      type: string
+    CheckpointData:
+      properties:
+        asset_type:
+          const: checkpoint
+          default: checkpoint
+          description: Asset type.
+          title: Asset Type
+        data_type:
+          allOf:
+            - $ref: '#/components/schemas/DataType'
+          default: fp16
+          description: Data type.
+        engine:
+          allOf:
+            - $ref: '#/components/schemas/BaseEngine'
+          description: Engine type.
+        file_format:
+          allOf:
+            - $ref: '#/components/schemas/FileFormat'
+          default: safetensors
+          description: File format.
+      required:
+        - engine
+      title: CheckpointData
+      type: object
+    CompleteAssetUploadRequest:
+      properties:
+        token:
+          default: ''
+          deprecated: true
+          description: Unused
+          title: Token
+          type: string
+      title: CompleteAssetUploadRequest
+      type: object
+    CompleteAssetUploadResponse:
+      properties:
+        error:
+          anyOf:
+            - type: string
+          description: Error.
+          title: Error
+      title: CompleteAssetUploadResponse
+      type: object
+    CreateAssetRequest:
+      properties:
+        asset_type:
+          allOf:
+            - $ref: '#/components/schemas/AssetType'
+          description: Asset type.
+        data:
+          description: Data specific to the asset type; use the class named ${asset_type}Data
+          title: Data
+          type: object
+        description:
+          anyOf:
+            - type: string
+          description: Asset descriptions.
+          title: Description
+        is_public:
+          default: false
+          description: True if asset is public.
+          title: Is Public
+          type: boolean
+        name:
+          description: Asset name.
+          title: Name
+          type: string
+        transfer_api_type:
+          allOf:
+            - $ref: '#/components/schemas/TransferApiType'
+          default: presigned-url
+          description: Transfer API type.
+        url:
+          anyOf:
+            - format: uri
+              maxLength: 2083
+              minLength: 1
+              type: string
+          description: Upload the contents of the url as the asset.
+          title: Url
+      required:
+        - asset_type
+        - name
+        - description
+        - data
+      title: CreateAssetRequest
+      type: object
+    CreateAssetResponse:
+      properties:
+        asset:
+          allOf:
+            - $ref: '#/components/schemas/Asset'
+          description: Asset.
+        token:
+          default: ''
+          deprecated: true
+          description: Unused. Present for compatibility purposes.
+          title: Token
+          type: string
+        transfer_api:
+          description: Asset transfer API.
+          discriminator:
+            mapping:
+              none: '#/components/schemas/NoTransferApi'
+              presigned-url: '#/components/schemas/PresignedUrlTransferApi'
+              sts: '#/components/schemas/StsTransferApi'
+            propertyName: type
+          oneOf:
+            - $ref: '#/components/schemas/PresignedUrlTransferApi'
+            - $ref: '#/components/schemas/StsTransferApi'
+            - $ref: '#/components/schemas/NoTransferApi'
+          title: Transfer Api
+      required:
+        - asset
+        - transfer_api
+      title: CreateAssetResponse
+      type: object
+    DataType:
+      enum:
+        - fp16
+        - fp32
+        - int4
+        - int8
+      title: DataType
+      type: string
+    DeleteAssetResponse:
+      properties:
+        deleted_at:
+          description: Deletion time.
+          title: Deleted At
+          type: string
+        id:
+          description: Asset ID.
+          title: Id
+          type: string
+      required:
+        - id
+        - deleted_at
+      title: DeleteAssetResponse
+      type: object
+    FileData:
+      properties:
+        asset_type:
+          const: file
+          default: file
+          description: Asset type.
+          title: Asset Type
+        file_format:
+          allOf:
+            - $ref: '#/components/schemas/FileExtension'
+          default: unknown
+          description: File format.
+        preview_url:
+          anyOf:
+            - type: string
+          description: Preview URL.
+          title: Preview Url
+        version:
+          default: ''
+          description: Version.
+          title: Version
+          type: string
+      title: FileData
+      type: object
+    FileExtension:
+      enum:
+        - unknown
+        - png
+        - jpg
+        - jpeg
+        - txt
+      title: FileExtension
+      type: string
+    FileFormat:
+      enum:
+        - safetensors
+        - pt
+      title: FileFormat
+      type: string
+    HTTPValidationError:
+      properties:
+        detail:
+          items:
+            $ref: '#/components/schemas/ValidationError'
+          title: Detail
+          type: array
+      title: HTTPValidationError
+      type: object
+    ListAssetsResponse:
+      properties:
+        data:
+          description: List of assets.
+          items:
+            $ref: '#/components/schemas/Asset'
+          title: Data
+          type: array
+        has_more:
+          description: True if there are more asset to show.
+          title: Has More
+          type: boolean
+        total:
+          description: Total number of assets.
+          title: Total
+          type: integer
+      required:
+        - has_more
+        - total
+        - data
+      title: ListAssetsResponse
+      type: object
+    LoraData:
+      properties:
+        asset_type:
+          const: lora
+          default: lora
+          description: Asset type.
+          title: Asset Type
+        data_type:
+          allOf:
+            - $ref: '#/components/schemas/DataType'
+          default: fp16
+          description: Data type.
+        engine:
+          allOf:
+            - $ref: '#/components/schemas/BaseEngine'
+          description: Engine type.
+        file_format:
+          allOf:
+            - $ref: '#/components/schemas/FileFormat'
+          default: safetensors
+          description: File format.
+        trigger_words:
+          anyOf:
+            - items:
+                type: string
+              type: array
+          description: Trigger words.
+          title: Trigger Words
+      required:
+        - engine
+      title: LoraData
+      type: object
+    NoTransferApi:
+      description: |-
+        This type exists to avoid Optional[TransferApi] so openapi-generator can work.
+
+        In this class, type is not added to TransferApiType because it is not a valid
+        TransferApiType. It exists only to note that no TransferApi is defined.
+      properties:
+        type:
+          const: none
+          default: none
+          description: URL type.
+          title: Type
+      title: NoTransferApi
+      type: object
+    PresignedUrlTransferApi:
+      properties:
+        get_url:
+          description: Get asset URL.
+          title: Get Url
+          type: string
+        put_url:
+          description: Asset URL to upload.
+          title: Put Url
+          type: string
+        type:
+          const: presigned-url
+          default: presigned-url
+          description: URL type.
+          title: Type
+      required:
+        - get_url
+        - put_url
+      title: PresignedUrlTransferApi
+      type: object
+    RetrieveAssetResponse:
+      properties:
+        asset:
+          allOf:
+            - $ref: '#/components/schemas/Asset'
+          description: Asset.
+        transfer_api:
+          description: Transfer API.
+          discriminator:
+            mapping:
+              none: '#/components/schemas/NoTransferApi'
+              presigned-url: '#/components/schemas/PresignedUrlTransferApi'
+              sts: '#/components/schemas/StsTransferApi'
+            propertyName: type
+          oneOf:
+            - $ref: '#/components/schemas/PresignedUrlTransferApi'
+            - $ref: '#/components/schemas/StsTransferApi'
+            - $ref: '#/components/schemas/NoTransferApi'
+          title: Transfer Api
+      required:
+        - asset
+        - transfer_api
+      title: RetrieveAssetResponse
+      type: object
+    Status:
+      enum:
+        - ready_to_upload
+        - uploaded
+        - ready
+        - deleted
+        - rejected
+        - error
+      title: Status
+      type: string
+    StorageDescriptor:
+      properties:
+        archiver_storage_ref:
+          $ref: '#/components/schemas/ArchiverVolumeStorageRef'
+        storage_format:
+          const: archiver
+          title: Storage Format
+      required:
+        - storage_format
+        - archiver_storage_ref
+      title: StorageDescriptor
+      type: object
+    StsTransferApi:
+      properties:
+        aws_access_key_id:
+          description: AWS access key.
+          title: Aws Access Key Id
+          type: string
+        aws_secret_access_key:
+          description: AWS secret accesss key.
+          title: Aws Secret Access Key
+          type: string
+        aws_session_token:
+          anyOf:
+            - type: string
+          description: AWS session token.
+          title: Aws Session Token
+        s3_bucket:
+          description: S3 bucket.
+          title: S3 Bucket
+          type: string
+        s3_endpoint_url:
+          anyOf:
+            - type: string
+          description: S3 endpoint URL.
+          title: S3 Endpoint Url
+        s3_key:
+          description: S3 key.
+          title: S3 Key
+          type: string
+        s3_url:
+          description: S3 full URL.
+          title: S3 Url
+          type: string
+        type:
+          const: sts
+          default: sts
+          description: URL type.
+          title: Type
+      required:
+        - aws_access_key_id
+        - aws_secret_access_key
+        - s3_bucket
+        - s3_key
+        - s3_url
+      title: StsTransferApi
+      type: object
+    TextualInversionData:
+      properties:
+        asset_type:
+          const: textual_inversion
+          default: textual_inversion
+          description: Asset type.
+          title: Asset Type
+        data_type:
+          allOf:
+            - $ref: '#/components/schemas/DataType'
+          default: fp16
+          description: Data type.
+        engine:
+          allOf:
+            - $ref: '#/components/schemas/BaseEngine'
+          description: Engine type.
+        file_format:
+          allOf:
+            - $ref: '#/components/schemas/FileFormat'
+          default: safetensors
+          description: File format.
+        trigger_words:
+          default: []
+          description: Trigger words.
+          items:
+            type: string
+          title: Trigger Words
+          type: array
+      required:
+        - engine
+      title: TextualInversionData
+      type: object
+    TransferApiType:
+      enum:
+        - presigned-url
+        - sts
+      title: TransferApiType
+      type: string
+    VAEData:
+      properties:
+        asset_type:
+          const: vae
+          default: vae
+          description: Asset type.
+          title: Asset Type
+        data_type:
+          allOf:
+            - $ref: '#/components/schemas/DataType'
+          default: fp16
+          description: Data type.
+        engine:
+          allOf:
+            - $ref: '#/components/schemas/BaseEngine'
+          description: Engine type.
+        file_format:
+          allOf:
+            - $ref: '#/components/schemas/FileFormat'
+          default: safetensors
+          description: File format.
+      required:
+        - engine
+      title: VAEData
+      type: object
+    ValidationError:
+      properties:
+        loc:
+          items:
+            anyOf:
+              - type: string
+              - type: integer
+          title: Location
+          type: array
+        msg:
+          title: Message
+          type: string
+        type:
+          title: Error Type
+          type: string
+      required:
+        - loc
+        - msg
+        - type
+      title: ValidationError
+      type: object
+    VolumeData:
+      properties:
+        asset_type:
+          const: volume
+          default: volume
+          description: Asset type.
+          title: Asset Type
+        deletion_cleanup_done:
+          description: Determine if cleanup is finished.
+          title: Deletion Cleanup Done
+          type: boolean
+        mark_for_deletion_time:
+          anyOf:
+            - type: string
+          description: Deletion time.
+          title: Mark For Deletion Time
+        storage:
+          allOf:
+            - $ref: '#/components/schemas/StorageDescriptor'
+          description: Storage descriptor.
+        version:
+          description: Version.
+          title: Version
+          type: string
+      required:
+        - version
+        - storage
+        - deletion_cleanup_done
+        - mark_for_deletion_time
+      title: VolumeData
+      type: object
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+info:
+  title: Asset Lake API - 010524
+  version: '0.1'
 openapi: 3.1.0
 x-readme:
   proxy-enabled: false
